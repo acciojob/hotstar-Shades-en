@@ -1,6 +1,7 @@
 package com.driver.services;
 
 
+import com.driver.exception.UserNotFoundException;
 import com.driver.model.Subscription;
 import com.driver.model.SubscriptionType;
 import com.driver.model.User;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,16 +27,23 @@ public class UserService {
     public Integer addUser(User user){
 
         //Jut simply add the user to the Db and return the userId returned by the repository
-        return null;
+
+        User savedUser = userRepository.save(user);
+
+        return savedUser.getId();
     }
 
     public Integer getAvailableCountOfWebSeriesViewable(Integer userId){
 
         //Return the count of all webSeries that a user can watch based on his ageLimit and subscriptionType
         //Hint: Take out all the Webseries from the WebRepository
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()){
+            throw new UserNotFoundException("Invalid user Id");
+        }
+        User user = optionalUser.get();
 
-
-        return null;
+        return webSeriesRepository.getAvailableCountOfWebSeriesViewable(user.getAge(), user.getSubscription().getSubscriptionType());
     }
 
 
