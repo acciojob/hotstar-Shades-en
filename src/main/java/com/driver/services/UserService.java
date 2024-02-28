@@ -44,13 +44,29 @@ public class UserService {
         }
         User user = optionalUser.get();
         Subscription subscription = user.getSubscription();
-        if(subscription.getSubscriptionType()==SubscriptionType.BASIC)
-            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithBasic(user.getAge());
-        else if(subscription.getSubscriptionType()==SubscriptionType.PRO)
-            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithPro(user.getAge());
-        else{
-            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithElite(user.getAge());
+//        if(subscription.getSubscriptionType()==SubscriptionType.BASIC)
+//            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithBasic(user.getAge());
+//        else if(subscription.getSubscriptionType()==SubscriptionType.PRO)
+//            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithPro(user.getAge());
+//        else{
+//            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithElite(user.getAge());
+//        }
+
+        List<WebSeries> ageLimitWebseries = webSeriesRepository.findByAgeLimit(user.getAge());
+
+        int count = 0;
+        for(WebSeries webSeries: ageLimitWebseries){
+            if(subscription.getSubscriptionType().equals(SubscriptionType.ELITE)){
+                count++;
+            }
+            else if(subscription.getSubscriptionType().equals(SubscriptionType.PRO) && !webSeries.getSubscriptionType().equals(SubscriptionType.ELITE)){
+                count++;
+            }
+            else if (subscription.getSubscriptionType().equals(webSeries.getSubscriptionType())){
+                count++;
+            }
         }
+        return count;
     }
 
 

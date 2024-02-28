@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface WebSeriesRepository extends JpaRepository<WebSeries,Integer> {
 
     WebSeries findBySeriesName(String seriesName);
@@ -18,4 +20,7 @@ public interface WebSeriesRepository extends JpaRepository<WebSeries,Integer> {
 
     @Query("select count(w) from WebSeries w where w.ageLimit <= :age")
     int getAvailableCountOfWebSeriesViewableWithElite(@Param("age") int age);
+
+    @Query("select w from WebSeries w where w.ageLimit <= :age")
+    List<WebSeries> findByAgeLimit(@Param("age") int age);
 }
