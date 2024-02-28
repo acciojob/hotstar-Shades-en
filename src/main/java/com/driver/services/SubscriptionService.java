@@ -77,7 +77,7 @@ public class SubscriptionService {
         Subscription subscription = user.getSubscription();
         Integer newAmountToPay;
         if(subscription.getSubscriptionType()==SubscriptionType.ELITE){
-            throw new NonUpgradableSubscription("Already the best subscription");
+            throw new NonUpgradableSubscription("Already the best Subscription");
         }
         else if(subscription.getSubscriptionType()==SubscriptionType.BASIC){
             subscription.setSubscriptionType(SubscriptionType.PRO);
