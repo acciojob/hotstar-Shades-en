@@ -52,10 +52,13 @@ public class UserService {
 //            return webSeriesRepository.getAvailableCountOfWebSeriesViewableWithElite(user.getAge());
 //        }
 
-        List<WebSeries> ageLimitWebseries = webSeriesRepository.findByAgeLimit(user.getAge());
+        List<WebSeries> webseries = webSeriesRepository.findAll();
 
         int count = 0;
-        for(WebSeries webSeries: ageLimitWebseries){
+        for(WebSeries webSeries: webseries){
+            if(webSeries.getAgeLimit()>user.getAge()){
+                continue;
+            }
             if(subscription.getSubscriptionType().equals(SubscriptionType.ELITE)){
                 count++;
             }
