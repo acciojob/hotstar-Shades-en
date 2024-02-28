@@ -8,7 +8,7 @@ public class ProductionHouseEntryDto {
         this.name = name;
     }
 
-    public ProductionHouseEntryDto(){}
+//    public ProductionHouseEntryDto(){}
 
     public String getName() {
         return name;
