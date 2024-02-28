@@ -54,13 +54,9 @@ public class SubscriptionService {
                 amountPaid
         );
 
-        Optional<User> optionalUser = userRepository.findById(subscriptionEntryDto.getUserId());
-        if(!optionalUser.isPresent()){
-            throw new UserNotFoundException("Invalid user Id");
-        }
-        User user = optionalUser.get();
+        User user = userRepository.findById(subscriptionEntryDto.getUserId()).get();
         subscription.setUser(user);
-//        user.setSubscription(subscription);
+        user.setSubscription(subscription);
 
         subscriptionRepository.save(subscription);
         userRepository.save(user);
@@ -102,7 +98,7 @@ public class SubscriptionService {
         //We need to find out total Revenue of hotstar : from all the subscriptions combined
         //Hint is to use findAll function from the SubscriptionDb
         List<Subscription> subscriptions = subscriptionRepository.findAll();
-        Integer totalRevenue = 0;
+        int totalRevenue = 0;
         for(Subscription subscription: subscriptions){
             totalRevenue+= subscription.getTotalAmountPaid();
         }
